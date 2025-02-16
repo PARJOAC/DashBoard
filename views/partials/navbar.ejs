@@ -1,0 +1,61 @@
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <div class="container-fluid">
+        <a class="navbar-brand fw-bold" href="/">CasinoBot Dashboard</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ms-auto align-items-center">
+                <li class="nav-item">
+                    <a class="nav-link" href="/">Inicio</a>
+                </li>
+                <% if (user) { %>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/servers">Servidores</a>
+                    </li>
+                    <!-- Menú desplegable del avatar -->
+                    <li class="nav-item dropdown ms-3">
+                        <a href="#" class="nav-link dropdown-toggle d-flex align-items-center" id="userDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            <img src="https://cdn.discordapp.com/avatars/<%= user.id %>/<%= user.avatar %>.png" 
+                                class="rounded-circle border border-light" width="40" height="40" alt="Avatar">
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
+                            <li class="dropdown-item text-center fw-semibold">
+                                <%= user.username %>
+                            </li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a href="/logout" class="dropdown-item text-danger">Cerrar sesión</a></li>
+                        </ul>
+                    </li>
+                <% } else { %>
+                    <li class="nav-item ms-3">
+                        <a href="<%= discordOAuthURL %>" class="btn btn-discord btn-sm d-flex align-items-center px-3 py-2">
+                            <i class="bi bi-discord fs-5 me-2"></i> Iniciar sesión con Discord
+                        </a>
+                    </li>
+                <% } %>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<!-- Bootstrap Icons -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
+
+<!-- Estilos adicionales -->
+<style>
+    .btn-discord {
+        background-color: #5865F2;
+        color: white;
+        border-radius: 5px;
+        transition: background 0.3s ease-in-out;
+        font-weight: 500;
+    }
+    .btn-discord:hover {
+        background-color: #4854c5;
+        color: white;
+    }
+    .dropdown-menu {
+        min-width: 180px;
+    }
+</style>
