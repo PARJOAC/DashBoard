@@ -23,11 +23,10 @@ app.use((req, res, next) => {
   next();
 });
 
-const discordOAuthURL = `https://discord.com/api/oauth2/authorize?client_id=${
-  process.env.CLIENT_ID
-}&redirect_uri=${encodeURIComponent(
-  process.env.REDIRECT_URI
-)}&response_type=code&scope=identify`;
+const discordOAuthURL = `https://discord.com/api/oauth2/authorize?client_id=${process.env.CLIENT_ID
+  }&redirect_uri=${encodeURIComponent(
+    process.env.REDIRECT_URI
+  )}&response_type=code&scope=identify`;
 
 app.get("/", (req, res) => {
   res.render("index");
@@ -38,7 +37,7 @@ app.get("/servers", (req, res) => {
   const manageableGuilds = (req.session.guilds || []).filter(
     (guild) => (guild.permissions & 0x20) === 0x20
   );
-  res.render("servers", { guilds: manageableGuilds });
+  res.render("servers", { guilds: manageableGuilds, clientId: process.env.CLIENT_ID, discordOAuthURL: process.env.DISCORD_OAUTH_URL, });
 });
 
 app.get("/auth/discord", async (req, res) => {

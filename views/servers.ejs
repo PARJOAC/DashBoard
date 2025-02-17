@@ -1,205 +1,217 @@
 <!DOCTYPE html>
 <html lang="es">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Servidores - CasinoBot</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
-    <link href="/css/style.css" rel="stylesheet" />
-    <style>
-      body {
-        background-color: #111;
-        color: #fff;
-        font-family: "Arial", sans-serif;
-        margin: 0;
-        display: flex;
-        flex-direction: row;
-      }
 
-      /* Barra de navegación */
-      .navbar {
-        background-color: #000;
-        padding: 10px 20px;
-        z-index: 1050;
-        width: 100%;
-        position: fixed;
-        top: 0;
-        left: 0;
-      }
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Servidores - CasinoBot</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link href="/css/style.css" rel="stylesheet" />
+  <style>
+    body {
+      background-color: #111;
+      color: #fff;
+      font-family: "Arial", sans-serif;
+      margin: 0;
+      display: flex;
+      flex-direction: row;
+    }
 
-      .navbar .navbar-brand {
-        color: #fff;
-        font-size: 1.5rem;
-      }
+    .navbar {
+      background-color: #000;
+      padding: 10px 20px;
+      z-index: 1050;
+      width: 100%;
+      position: fixed;
+      top: 0;
+      left: 0;
+    }
 
-      .navbar .navbar-nav .nav-item .nav-link {
-        color: #fff;
-        margin-right: 20px;
-      }
+    .navbar .navbar-brand {
+      color: #fff;
+      font-size: 1.5rem;
+    }
 
-      .sidebar {
-        width: 250px;
-        background-color: rgba(0, 0, 0, 0.8);
-        padding: 20px;
-        position: fixed;
-        top: 60px;
-        bottom: 0;
-        left: 0;
-        overflow-y: auto;
-        z-index: 1000;
-        border-right: 1px solid #444;
-        box-shadow: 2px 0 10px rgba(0, 0, 0, 0.5);
-      }
+    .navbar .navbar-nav .nav-item .nav-link {
+      color: #fff;
+      margin-right: 20px;
+    }
 
-      .sidebar h3 {
-        color: #fff;
-        font-size: 1.5rem;
-        margin-bottom: 20px;
-      }
+    .sidebar {
+      width: 250px;
+      background-color: rgba(0, 0, 0, 0.8);
+      padding: 20px;
+      position: fixed;
+      top: 60px;
+      bottom: 0;
+      left: 0;
+      overflow-y: auto;
+      z-index: 1000;
+      border-right: 1px solid #444;
+      box-shadow: 2px 0 10px rgba(0, 0, 0, 0.5);
+    }
 
-      .guild-item {
-        display: flex;
-        align-items: center;
-        padding: 10px;
-        background-color: #111;
-        border: none;
-        color: #fff;
-        font-size: 1rem;
-        cursor: pointer;
-        margin-bottom: 10px;
-        border-radius: 5px;
-        transition: background-color 0.3s ease;
-      }
+    .sidebar h3 {
+      color: #fff;
+      font-size: 1.5rem;
+      margin-bottom: 20px;
+    }
 
-      .guild-item:hover {
-        background-color: #444;
-      }
+    .guild-item {
+      display: flex;
+      align-items: center;
+      position: relative;
+      padding: 10px;
+      background-color: #111;
+      border: none;
+      color: #fff;
+      font-size: 1rem;
+      cursor: pointer;
+      margin-bottom: 10px;
+      border-radius: 5px;
+      transition: background-color 0.3s ease;
+      overflow: hidden;
+    }
 
-      .guild-item img {
-        width: 35px;
-        height: 35px;
-        border-radius: 50%;
-        margin-right: 10px;
-      }
+    .guild-item:hover {
+      background-color: #444;
+    }
 
-      /* Servidor donde el bot no está */
-      .guild-item.disabled {
-        background-color: #333;
-      }
+    .guild-item img {
+      width: 45px;
+      height: 45px;
+      border-radius: 50%;
+      margin-right: 10px;
+    }
 
-      .guild-item.disabled:hover {
-        background-color: #444;
-      }
+    .guild-item span {
+      flex-grow: 1;
+      font-weight: bold;
+    }
 
-      .invite-button {
-        position: absolute;
-        top: 10px;
-        right: 10px;
-        background-color: #28a745;
-        color: white;
-        border: none;
-        padding: 5px 10px;
-        font-size: 0.8rem;
-        border-radius: 5px;
-        display: none; /* Inicialmente oculto */
-      }
+    .invite-button {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.6);
+      color: white;
+      font-size: 1rem;
+      font-weight: bold;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 5px;
+      border: none;
+      opacity: 0;
+      transition: opacity 0.3s ease, transform 0.2s ease;
+    }
 
-      .guild-item.disabled .invite-button {
-        display: block; /* Mostrar botón de invitación en servidores sin el bot */
-      }
+    .guild-item.disabled:hover .invite-button {
+      opacity: 1;
+      transform: scale(1.05);
+    }
 
-      .content {
-        margin-left: 250px;
-        padding: 20px;
-        flex-grow: 1;
-        background-color: #222;
-        margin-top: 60px;
-      }
+    .invite-button:hover {
+      background: rgba(40, 167, 69, 0.8);
+      transform: scale(1.1);
+    }
 
-      .server-config {
-        display: none;
-        background-color: #333;
-        padding: 20px;
-        border-radius: 10px;
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-      }
+    .guild-item:not(.disabled) .invite-button {
+      display: none;
+    }
 
-      .server-config.active {
-        display: block;
-      }
+    .content {
+      margin-left: 250px;
+      padding: 20px;
+      flex-grow: 1;
+      background-color: #222;
+      margin-top: 60px;
+    }
 
-      .btn-primary {
-        background-color: #007bff;
-        border: 2px solid #007bff;
-        padding: 10px 20px;
-        font-size: 1rem;
-        border-radius: 5px;
-        transition: background-color 0.3s ease, border-color 0.3s ease;
-      }
+    .server-config {
+      display: none;
+      background-color: #333;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    }
 
-      .btn-primary:hover {
-        background-color: #0056b3;
-        border-color: #0056b3;
-      }
+    .server-config.active {
+      display: block;
+    }
 
-    </style>
-  </head>
-  <body>
-    <%- include('partials/navbar', { user: user, discordOAuthURL: discordOAuthURL }) %>
+    .btn-primary {
+      background-color: #007bff;
+      border: 2px solid #007bff;
+      padding: 10px 20px;
+      font-size: 1rem;
+      border-radius: 5px;
+      transition: background-color 0.3s ease, border-color 0.3s ease;
+    }
+
+    .btn-primary:hover {
+      background-color: #0056b3;
+      border-color: #0056b3;
+    }
+  </style>
+</head>
+
+<body>
+  <%- include('partials/navbar', { user: user, discordOAuthURL: discordOAuthURL }) %>
 
     <div class="sidebar">
       <h3>Servidores</h3>
       <div class="search-bar">
-        <input
-          type="text"
-          id="searchServer"
-          placeholder="Buscar servidor..."
-          onkeyup="searchGuilds()"
-        />
+        <input type="text" id="searchServer" placeholder="Buscar servidor..." onkeyup="searchGuilds()" />
       </div>
       <ul class="list-group" id="guildList">
-        <% if (guilds.length > 0) { %> <% let seen = new Set(); %>
-        <% guilds.forEach(guild => { %>
-        <li class="guild-item <%= guild.botInGuild ? '' : 'disabled' %>" onclick="showConfig(<%= guild.id %>)">
-          <img
-            src="https://cdn.discordapp.com/icons/<%= guild.id %>/<%= guild.icon || 'default_avatar.png' %>.png"
-            alt="<%= guild.name %> Avatar"
-          />
-          <span><%= guild.name %></span>
+        <% if (guilds.length> 0) { %> <% let seen=new Set(); %>
+            <% guilds.forEach(guild=> { %>
+              <li class="guild-item <%= guild.botInGuild ? '' : 'disabled' %>" onclick="showConfig(<%= guild.id %>)">
+                <img
+                  src="https://cdn.discordapp.com/icons/<%= guild.id %>/<%= guild.icon || 'default_avatar.png' %>.png"
+                  alt="<%= guild.name %> Avatar" />
+                <span>
+                  <%= guild.name %>
+                </span>
 
-          <% if (!guild.botInGuild) { %>
-          <button class="invite-button" onclick="inviteBot('<%= guild.id %>')">Invitar Bot</button>
-          <% } %>
-        </li>
-        <% seen.add(guild.id) %> <% }); %> <% } else { %>
-        <li class="guild-item">
-          No tienes servidores donde puedas añadir el bot.
-        </li>
-        <% } %>
+                <% if (!guild.botInGuild) { %>
+                  <button class="invite-button" onclick="inviteBot('<%= guild.id %>')">Invitar Bot</button>
+                  <% } %>
+              </li>
+              <% seen.add(guild.id) %>
+                <% }); %>
+                  <% } else { %>
+                    <li class="guild-item">
+                      No tienes servidores donde puedas añadir el bot.
+                    </li>
+                    <% } %>
       </ul>
     </div>
 
     <div class="content">
-      <% guilds.forEach(guild => { %>
-      <div class="server-config" id="config<%= guild.id %>">
-        <h3>Configuración de <%= guild.name %></h3>
-        <form>
-          <div class="mb-3">
-            <label for="languageSelect<%= guild.id %>" class="form-label">Idioma del Bot</label>
-            <select id="languageSelect<%= guild.id %>" class="form-select">
-              <option value="es" <% if (guild.language === 'es') { %>selected<% } %>>Español</option>
-              <option value="en" <% if (guild.language === 'en') { %>selected<% } %>>Inglés</option>
-              <option value="fr" <% if (guild.language === 'fr') { %>selected<% } %>>Francés</option>
-              <option value="de" <% if (guild.language === 'de') { %>selected<% } %>>Alemán</option>
-            </select>
-          </div>
-          <button type="submit" class="btn btn-primary">Guardar configuración</button>
-        </form>
-      </div>
-      <% }); %>
+      <% guilds.forEach(guild=> { %>
+        <div class="server-config" id="config<%= guild.id %>">
+          <h3>Configuración de <%= guild.name %>
+          </h3>
+          <form>
+            <div class="mb-3">
+              <label for="languageSelect<%= guild.id %>" class="form-label">Idioma del Bot</label>
+              <select id="languageSelect<%= guild.id %>" class="form-select">
+                <option value="es" <% if (guild.language==='es' ) { %>selected<% } %>>Español</option>
+                <option value="en" <% if (guild.language==='en' ) { %>selected<% } %>>Inglés</option>
+                <option value="fr" <% if (guild.language==='fr' ) { %>selected<% } %>>Francés</option>
+                <option value="de" <% if (guild.language==='de' ) { %>selected<% } %>>Alemán</option>
+              </select>
+            </div>
+            <button type="submit" class="btn btn-primary">Guardar configuración</button>
+          </form>
+        </div>
+        <% }); %>
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
     <script>
       function searchGuilds() {
         const input = document.getElementById("searchServer").value.toLowerCase();
@@ -207,28 +219,20 @@
 
         guilds.forEach((guild) => {
           const guildName = guild.textContent.toLowerCase();
-          if (guildName.includes(input)) {
-            guild.style.display = "";
-          } else {
-            guild.style.display = "none";
-          }
+          guild.style.display = guildName.includes(input) ? "" : "none";
         });
       }
 
       function showConfig(guildId) {
-        const configs = document.querySelectorAll('.server-config');
-        configs.forEach(config => config.classList.remove('active'));
-
-        const configToShow = document.getElementById('config' + guildId);
-        if (configToShow) {
-          configToShow.classList.add('active');
-        }
+        document.querySelectorAll('.server-config').forEach(config => config.classList.remove('active'));
+        document.getElementById('config' + guildId)?.classList.add('active');
       }
 
       function inviteBot(guildId) {
-        const inviteURL = `https://discord.com/oauth2/authorize?client_id=YOUR_BOT_CLIENT_ID&scope=bot&permissions=YOUR_BOT_PERMISSIONS&guild_id=${guildId}`;
+        const inviteURL = `https://discord.com/oauth2/authorize?client_id=<%= clientId %>&scope=bot&permissions=8&integration_type=0&scope=bot&guild_id=${guildId}`;
         window.open(inviteURL, '_blank');
       }
     </script>
-  </body>
+</body>
+
 </html>
